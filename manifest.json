@@ -1,0 +1,21 @@
+{
+  "manifest_version": 2,
+  "name": "Tomato",
+  "version": "1.0.0",
+  "description": "工作学习时间管理",
+  "icons": {
+      "48" : "assets/64.png",
+      "128": "assets/128.png"
+  },
+  "permissions": [
+    "storage",
+    "alwaysOnTopWindows",
+    "notifications"
+  ],
+  "app": {
+      "background": {
+          "scripts": ["background.js"]
+      }
+  }
+
+}

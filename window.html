@@ -1,0 +1,404 @@
+<html>
+<head>
+    <title>Tomato</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css">
+    <link href="plugins/clockpicker/clockpicker.css" rel="stylesheet">
+    <link href="plugins/clockpicker/standalone.css" rel="stylesheet">
+    <script src="js/jquery-3.1.1.min.js" charset="utf-8"></script>
+    <script src="js/main.js" charset="utf-8"></script>
+    <script src="plugins/clockpicker/clockpicker.js" charset="utf-8"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li id="desc-button"><a href="#0">?</a></li>
+                <li id="home-button"><a class="nav-selected" href="#1">开始番茄</a></li>
+                <li><a href="#2">设置</a></li>
+            </ul>
+            <span id="tomato-state">无番茄</span>
+        </nav>
+    </header>
+    <main>
+        <div id="description" style="display: none">
+            <div class="description-item">
+                <h2>什么是番茄工作法？</h2>
+                <p>假设你有个名为task的任务。设置4个番茄，每个番茄时长为25分钟，短休息为5分钟，长休息为20分钟，那么每25分钟的工作后会休息5分钟，直到第四个番茄过后来一次20分钟的长休息。随后循环进行番茄工作，直到完成你设定的任务。</p>
+                <div class="limit-container">
+                    <a target="_blank" href="https://zh.wikipedia.org/wiki/%E7%95%AA%E8%8C%84%E5%B7%A5%E4%BD%9C%E6%B3%95">wikipedia</a>
+                    <a target="_blank" href="http://baike.baidu.com/link?url=Nd6AdKpdluNxO1KQERxIMuVOSzlvPi7rjl-OSxtogIJRghpYlfImFUe-pYpCGr9HNSTySWrFy7z4aQGJ4W5McNFkNTpWVBIc7rjQGlMbMtCZo64q6EbELB6Wml0ZWRJb5-bPPx6OcvjiYBJlMEQmc_">百度百科</a>
+                </div>
+            </div>
+            <div class="description-item">
+                <h2>眼睛忘记休息？</h2>
+                <p>设置眼睛休息提醒吧，让学习工作变得可持续。间隔一定时间提醒你护眼。</p>
+            </div>
+            <div class="description-item">
+                <h2>忘记喝水？</h2>
+                <p>设置喝水提醒吧，满足一天正常补水，而不至于忙于学习工作忘记喝水。</p>
+            </div>
+        </div>
+
+        <div id="mainPage">
+            <div id="countdown">00:00</div>
+            <div id="start-button"><a href="##">开始</a></div>
+            <div class="task-message">
+              <div class="task-title">
+                <p>今天</p>
+              </div>
+              <p>已完成<span id="message-finished">0</span>组番茄（每组有<span id="message-number">0</span>个番茄）任务</p>
+              <table>
+                <tr>
+                  <th><span id="th-tomato">0</span>个番茄</th>
+                  <th><span id="th-short">0</span>个短休息</th>
+                  <th><span id="th-long">0</span>个长休息</th>
+                </tr>
+                <tr>
+                  <td><span id="td-worktime">0<span class="td-color">小时</span>0<span class="td-color">分钟</span></span></td>
+                  <td><span id="td-shorttime">0<span class="td-color">小时</span>0<span class="td-color">分钟</span></span></td>
+                  <td><span id="td-longtime">0<span class="td-color">小时</span>0<span class="td-color">分钟</span></span></td>
+                </tr>
+              </table>
+              <div class="task-title">
+                <p>总耗时:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="total-time">0<span class="td-color">小时</span>0<span class="td-color">分钟</span></span></p>
+              </div>
+            </div>
+        </div>
+        <div id="configure" style="display: none">
+            <nav>
+                <ul>
+                    <li><a class="config-selected" href="#1">时钟设置</a></li>
+                    <li><a href="#1">提醒设置</a></li>
+                    <li><a href="#1">护眼设置</a></li>
+                    <li><a href="#1">喝水设置</a></li>
+                    <li><a href="#1">关于</a></li>
+                </ul>
+            </nav>
+
+            <div class="config-content">
+                <form id="clock-config">
+                    <span class="input">
+                    <input class="input__field input__field--isao" type="text" placeholder="推荐4个番茄" id="tomato-number">
+                    <label class="input__label input__label--isao" for="tomato-number" data-content="番茄数(1~20)">
+                      <span class="input__label-content input__label-content--isao">番茄数</span>
+                    </label>
+                    </span>
+
+                    <span class="input">
+                    <input class="input__field input__field--isao" type="text" placeholder="推荐25分钟" id="work-period">
+                    <label class="input__label input__label--isao" for="work-period" data-content="一个番茄的时长(1~59)">
+                      <span class="input__label-content input__label-content--isao">分钟/个 番茄</span>
+                    </label>
+                    </span>
+
+                    <span class="input">
+                    <input class="input__field input__field--isao" type="text" placeholder="推荐5分钟" id="short-rest">
+                    <label class="input__label input__label--isao" for="short-rest" data-content="短休息(1~10)">
+                      <span class="input__label-content input__label-content--isao">短休息</span>
+                    </label>
+                    </span>
+
+                    <span class="input">
+                    <input class="input__field input__field--isao" type="text" placeholder="推荐15分钟" id="long-rest">
+                    <label class="input__label input__label--isao" for="long-rest" data-content="长休息(5~30)">
+                      <span class="input__label-content input__label-content--isao">长休息</span>
+                    </label>
+                    </span>
+                </form>
+            </div>
+
+            <div class="config-content" style="display: none">
+                <div class="notif-item">
+
+                    <form>
+                        <span>工作提醒声音</span>
+                        <select class="notify-select" name="work">
+                          <option value="0">All eye on me</option>
+                          <option value="1">Quiet Knock</option>
+                          <option value="2">Water Drop</option>
+                          <option value="3">You wouldnt believe</option>
+                          <option value="4">Wet</option>
+                          <option value="5">Water Wave</option>
+                          <option value="6">arpeggio</option>
+                          <option value="7" selected>oringz1</option>
+                          <option value="8">oringz2</option>
+                          <option value="9">Happy New Year</option>
+                          <option value="10">Jingle bells</option>
+                          <option value="11">Jingle bells2</option>
+                          <option value="12">smodyssey_piano</option>
+                        </select>
+                    </form>
+                    <span class='tg-list-item'>
+                      <input class='tgl tgl-skewed audio-switch' id='notify1' type='checkbox' checked>
+                      <label class='tgl-btn toggle-button' data-tg-off='OFF' data-tg-on='ON' for='notify1'></label>
+                    </span>
+                </div>
+
+                <div class="notif-item">
+                    <form>
+                        <span>短休息提醒音</span>
+                        <select class="notify-select" name="shortrest">
+                          <option value="0">All eye on me</option>
+                          <option value="1">Quiet Knock</option>
+                          <option value="2">Water Drop</option>
+                          <option value="3" selected>You wouldnt believe</option>
+                          <option value="4">Wet</option>
+                          <option value="5">Water Wave</option>
+                          <option value="6">arpeggio</option>
+                          <option value="7">oringz1</option>
+                          <option value="8">oringz2</option>
+                          <option value="9">Happy New Year</option>
+                          <option value="10">Jingle bells</option>
+                          <option value="11">Jingle bells2</option>
+                          <option value="12">smodyssey_piano</option>
+                        </select>
+                    </form>
+                    <span class='tg-list-item'>
+                      <input class='tgl tgl-skewed audio-switch' id='notify2' type='checkbox' checked>
+                      <label class='tgl-btn toggle-button' data-tg-off='OFF' data-tg-on='ON' for='notify2'></label>
+                    </span>
+                </div>
+
+                <div class="notif-item">
+                    <form>
+                        <span>长休息提醒音</span>
+                        <select class="notify-select" name="longrest">
+                          <option value="0">All eye on me</option>
+                          <option value="1">Quiet Knock</option>
+                          <option value="2">Water Drop</option>
+                          <option value="3">You wouldnt believe</option>
+                          <option value="4">Wet</option>
+                          <option value="5">Water Wave</option>
+                          <option value="6">arpeggio</option>
+                          <option value="7">oringz1</option>
+                          <option value="8">oringz2</option>
+                          <option value="9">Happy New Year</option>
+                          <option value="10">Jingle bells</option>
+                          <option value="11" selected>Jingle bells2</option>
+                          <option value="12">smodyssey_piano</option>
+                        </select>
+                    </form>
+                    <span class='tg-list-item'>
+                      <input class='tgl tgl-skewed audio-switch' id='notify3' type='checkbox' checked>
+                      <label class='tgl-btn toggle-button' data-tg-off='OFF' data-tg-on='ON' for='notify3'></label>
+                    </span>
+                </div>
+
+                <div class="notif-item">
+                    <form>
+                        <span>护眼提醒声音</span>
+                        <select class="notify-select" name="eyecare">
+                          <option value="0" selected>All eye on me</option>
+                          <option value="1">Quiet Knock</option>
+                          <option value="2">Water Drop</option>
+                          <option value="3">You wouldnt believe</option>
+                          <option value="4">Wet</option>
+                          <option value="5">Water Wave</option>
+                          <option value="6">arpeggio</option>
+                          <option value="7">oringz1</option>
+                          <option value="8">oringz2</option>
+                          <option value="9">Happy New Year</option>
+                          <option value="10">Jingle bells</option>
+                          <option value="11">Jingle bells2</option>
+                          <option value="12">smodyssey_piano</option>
+                        </select>
+                    </form>
+                    <span class='tg-list-item'>
+                      <input class='tgl tgl-skewed audio-switch' id='notify4' type='checkbox' checked>
+                      <label class='tgl-btn toggle-button' data-tg-off='OFF' data-tg-on='ON' for='notify4'></label>
+                    </span>
+                </div>
+
+                <div class="notif-item">
+                    <form>
+                        <span>喝水提醒声音</span>
+                        <select class="notify-select" name="drink">
+                          <option value="0">All eye on me</option>
+                          <option value="1">Quiet Knock</option>
+                          <option value="2" selected>Water Drop</option>
+                          <option value="3">You wouldnt believe</option>
+                          <option value="4">Wet</option>
+                          <option value="5">Water Wave</option>
+                          <option value="6">arpeggio</option>
+                          <option value="7">oringz1</option>
+                          <option value="8">oringz2</option>
+                          <option value="9">Happy New Year</option>
+                          <option value="10">Jingle bells</option>
+                          <option value="11">Jingle bells2</option>
+                          <option value="12">smodyssey_piano</option>
+                        </select>
+                    </form>
+                    <span class='tg-list-item'>
+                      <input class='tgl tgl-skewed audio-switch' id='notify5' type='checkbox' checked>
+                      <label class='tgl-btn toggle-button' data-tg-off='OFF' data-tg-on='ON' for='notify5'></label>
+                    </span>
+                </div>
+                <a id="reset1" href="#">重置</a>
+
+            </div>
+            <div class="config-content" style="display: none">
+                <span class='tg-list-item'>
+                  <input class='tgl tgl-flip' id='eye-button' type='checkbox'>
+                  <label class='tgl-btn button' data-tg-off='Nope' data-tg-on='Yeah!' for='eye-button'></label>
+                </span>
+
+                <span class="input">
+                <input class="input__field input__field--isao" type="text" placeholder="推荐15分钟" id="eyecare" value="15">
+                <label class="input__label input__label--isao" for="eyecare" data-content="护眼提醒间隔(5~30)">
+                  <span class="input__label-content input__label-content--isao">护眼提醒间隔</span>
+                </label>
+                </span>
+            </div>
+
+            <div class="config-content" style="display: none">
+                <span class='tg-list-item'>
+                  <input class='tgl tgl-flip' id='drink-button' type='checkbox'>
+                  <label class='tgl-btn button' data-tg-off='Nope' data-tg-on='Yeah!' for='drink-button'></label>
+                </span>
+
+                <div class="time-item">
+                    <div class="input-group clockpicker" data-autoclose="true">
+                        <span class="list-title">第一杯水</span>
+                        <input type="text" class="form-control" value="07:30">
+                        <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-time"></span>
+                        </span>
+                    </div>
+                    <span class='tg-list-item'>
+                      <input class='tgl tgl-skewed' id='cb1' type='checkbox' checked>
+                      <label class='tgl-btn toggle-button' data-tg-off='OFF' data-tg-on='ON' for='cb1'></label>
+                    </span>
+                </div>
+
+                <div class="time-item">
+                    <div class="input-group clockpicker" data-autoclose="true">
+                        <span class="list-title">第二杯水</span>
+                        <input type="text" class="form-control" value="09:30">
+                        <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-time"></span>
+                        </span>
+                    </div>
+                    <span class='tg-list-item'>
+                      <input class='tgl tgl-skewed' id='cb2' type='checkbox' checked>
+                      <label class='tgl-btn toggle-button' data-tg-off='OFF' data-tg-on='ON' for='cb2'></label>
+                    </span>
+                </div>
+
+                <div class="time-item">
+                    <div class="input-group clockpicker" data-autoclose="true">
+                        <span class="list-title">第三杯水</span>
+                        <input type="text" class="form-control" value="11:30">
+                        <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-time"></span>
+                        </span>
+                    </div>
+                    <span class='tg-list-item'>
+                      <input class='tgl tgl-skewed' id='cb3' type='checkbox' checked>
+                      <label class='tgl-btn toggle-button' data-tg-off='OFF' data-tg-on='ON' for='cb3'></label>
+                    </span>
+                </div>
+
+                <div class="time-item">
+                    <div class="input-group clockpicker" data-autoclose="true" data-placement="top">
+                        <span class="list-title">第四杯水</span>
+                        <input type="text" class="form-control" value="12:50">
+                        <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-time"></span>
+                        </span>
+                    </div>
+                    <span class='tg-list-item'>
+                      <input class='tgl tgl-skewed' id='cb4' type='checkbox' checked>
+                      <label class='tgl-btn toggle-button' data-tg-off='OFF' data-tg-on='ON' for='cb4'></label>
+                    </span>
+                </div>
+
+                <div class="time-item">
+                    <div class="input-group clockpicker" data-autoclose="true" data-placement="top">
+                        <span class="list-title">第五杯水</span>
+                        <input type="text" class="form-control" value="14:30">
+                        <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-time"></span>
+                        </span>
+                    </div>
+                    <span class='tg-list-item'>
+                      <input class='tgl tgl-skewed' id='cb5' type='checkbox' checked>
+                      <label class='tgl-btn toggle-button' data-tg-off='OFF' data-tg-on='ON' for='cb5'></label>
+                    </span>
+                </div>
+
+                <div class="time-item">
+                    <div class="input-group clockpicker" data-autoclose="true" data-placement="top">
+                        <span class="list-title">第六杯水</span>
+                        <input type="text" class="form-control" value="16:50">
+                        <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-time"></span>
+                        </span>
+                    </div>
+                    <span class='tg-list-item'>
+                      <input class='tgl tgl-skewed' id='cb6' type='checkbox' checked>
+                      <label class='tgl-btn toggle-button' data-tg-off='OFF' data-tg-on='ON' for='cb6'></label>
+                    </span>
+                </div>
+
+                <div class="time-item">
+                    <div class="input-group clockpicker" data-autoclose="true" data-placement="top">
+                        <span class="list-title">第七杯水</span>
+                        <input type="text" class="form-control" value="19:30">
+                        <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-time"></span>
+                        </span>
+                    </div>
+                    <span class='tg-list-item'>
+                      <input class='tgl tgl-skewed' id='cb7' type='checkbox' checked>
+                      <label class='tgl-btn toggle-button' data-tg-off='OFF' data-tg-on='ON' for='cb7'></label>
+                    </span>
+                </div>
+
+                <div class="time-item">
+                    <div class="input-group clockpicker" data-autoclose="true" data-placement="top">
+                        <span class="list-title">第八杯水</span>
+                        <input type="text" class="form-control" value="21:30">
+                        <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-time"></span>
+                        </span>
+                    </div>
+                    <span class='tg-list-item'>
+                      <input class='tgl tgl-skewed' id='cb8' type='checkbox' checked>
+                      <label class='tgl-btn toggle-button' data-tg-off='OFF' data-tg-on='ON' for='cb8'></label>
+                    </span>
+                </div>
+
+
+            </div>
+            <div class="config-content about" style="display: none">
+                <h2>关于</h2>
+                <p>番茄APP可以帮助你提升工作学习效率，让你在做事时更加专注</p>
+                <p>工作学习过程中保护眼睛、及时补水同样重要</p>
+            </div>
+
+
+        </div>
+    </main>
+
+    <div class="">
+        <audio src="assets/audio/all-eyes-on-me.mp3"></audio>
+        <audio src="assets/audio/quiet-knock.mp3"></audio>
+        <audio src="assets/audio/drop.mp3"></audio>
+        <audio src="assets/audio/you-wouldnt-believe.mp3"></audio>
+        <audio src="assets/audio/wet.mp3"></audio>
+        <audio src="assets/audio/waterWave.wav"></audio>
+
+        <audio src="assets/audio/arpeggio.mp3"></audio>
+        <audio src="assets/audio/oringz-w435.mp3"></audio>
+        <audio src="assets/audio/oringz-w437.mp3"></audio>
+
+        <audio src="assets/audio/and-a-happy-new-year-sms.mp3"></audio>
+        <audio src="assets/audio/jingle-bells-sms.mp3"></audio>
+        <audio src="assets/audio/jingle-jingle-bells.mp3"></audio>
+        <audio src="assets/audio/smodyssey_piano.mp3"></audio>
+    </div>
+
+</body>
+
+</html>
