@@ -27,15 +27,21 @@ $(document).ready(function() {
   var $eyeCare = $('#eyecare');
   var $tomatoState = $('#tomato-state');
 
+  var tomatoStorage = {
+
+  }
+
   chrome.storage.local.get(null, function(result){
-    if(result) {
+    if(!$.isEmptyObject(result)) {
+      console.log('有storage');
+      console.log(result);
       tomatoCountState = result.tomato_number;
       workTimeState = result.work_time*60;
       shortTimeState = result.short_rest*60;
       longTimeState = result.long_rest*60;
       audioArray = result.audioArr;
       audioSwitchArray = result.isAudioItems;
-      drinkCheckArray = result.drinklist
+      drinkCheckArray = result.drinklist;
       showCountdown(workTimeState);
       audioResetView();
       audioResetButton();
@@ -49,14 +55,29 @@ $(document).ready(function() {
       $eyeCare.val(result.eye_care);
     } else {
       console.log('初始设置');
-      tomatoCountState = 4;
-      workTimeState = 25*60;
-      shortTimeState = 5*60;
-      longTimeState = 10*60;
-      $tomatoCount.val(4);
-      $workTime.val(25);
-      $shortTime.val(5);
-      $longTime.val(10);
+      tomatoCountState = $tomatoCount.val();
+      workTimeState = $workTime.val()*60;
+      shortTimeState = $shortTime.val()*60;
+      longTimeState = $longTime.val()*60;
+      eyeTimeState = $eyeCare.val()*60;
+      audioSwitchArray = [true, true, true, true, true];
+      audioArray = [7,3,11,0,2];
+      getDrinkList();
+      tomatoStorage = {
+        tomato_number : tomatoCountState,
+        work_time : workTimeState/60,
+        short_rest : shortTimeState/60,
+        long_rest : longTimeState/60,
+        isAudioItems : [true, true, true, true, true],
+        audioArr : audioArray,
+        eye_care : eyeTimeState/60,
+        drinklist : drinkCheckArray
+      }
+
+      chrome.storage.local.set( tomatoStorage, function(){
+        console.log('storage complited')
+      });
+
     }
   });
 
@@ -237,7 +258,7 @@ $('#reset1').bind("click", function(){
 });
 
 var $audioSwitch = $('.audio-switch');
-var audioSwitchArray = new Array();
+
 function audioResetButton(){
   $audioSwitch.each(function(index, el){
     if(audioSwitchArray[index]){
@@ -333,8 +354,8 @@ function drinkResetView(){
 
 }
 
-drinkInput.change(function(event) {
-  console.log('喝水设置改变了');
+
+function getDrinkList(){
   var arr = new Array();
   $drinkInputList.each(function(index, el) {
     arr[index] = $(this).val();
@@ -349,6 +370,10 @@ drinkInput.change(function(event) {
     }
   }
   drinkCheckArray = arr;
+}
+drinkInput.change(function(event) {
+  console.log('喝水设置改变了');
+  getDrinkList();
   var drinkArrayStorage = {
     drinklist : drinkCheckArray
   }
