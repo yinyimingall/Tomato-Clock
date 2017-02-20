@@ -5,15 +5,15 @@
 经过我精心设计，我大体满意了。希望番茄APP可以帮你提高工作学习效率的同时带给你健康办公的习惯。
 ## 页面展示
 介绍
-![image](https://raw.githubusercontent.com/yinyimingall/Tomato-Clock/screenshots/introduce.png)
+![image](https://raw.githubusercontent.com/yinyimingall/Tomato-Clock/master/screenshots/introduce.png)
 主页
-![image](https://raw.githubusercontent.com/yinyimingall/Tomato-Clock/screenshots/home.png)
+![image](https://raw.githubusercontent.com/yinyimingall/Tomato-Clock/master/screenshots/home.png)
 时钟设置
 ![image](https://raw.githubusercontent.com/yinyimingall/Tomato-Clock/master/screenshots/configuration.png)
 声音设置
-![image](https://raw.githubusercontent.com/yinyimingall/Tomato-Clock/screenshots/notification.png)
+![image](https://raw.githubusercontent.com/yinyimingall/Tomato-Clock/master/screenshots/notification.png)
 护眼设置
-![image](https://raw.githubusercontent.com/yinyimingall/Tomato-Clock/screenshots/eyecare.png)
+![image](https://raw.githubusercontent.com/yinyimingall/Tomato-Clock/master/screenshots/eyecare.png)
 喝水设置
 ![image](https://raw.githubusercontent.com/yinyimingall/Tomato-Clock/master/screenshots/drink.png)
 
